@@ -3,10 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <title>Document</title>
-    
+    <title>ConnectN</title>    
+    <link rel="stylesheet" href="./connectN.css">
+    <script src="./connectN.js" type="text/javascript"></script>
 </head>
-<body>
-    
+<body>    
+    <div id="gameStart" class="gameStart">        
+        <button onclick="startButton()">START</button>        
+    </div>
+    <div id="gamePlay" class="gamePlay">        
+        <h1>CONNECT 3</h1>
+        <div class="player">
+            <h2 id="player">PLAYER TURN</h2>
+            <div id="currentPlayerCoin" class="redCoin"></div>
+        </div>        
+        <div class="containerBoard">                        
+            <table id="board" class="board">
+                <tr id="firstRow" class="firstRow"></tr>
+                <!--
+                    createBoard: Function to create the game board
+                    source: connectN.js
+                -->
+                <script>createBoard();</script>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>
