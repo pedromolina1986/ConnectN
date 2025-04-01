@@ -12,7 +12,7 @@ Triangle: https://css-tricks.com/snippets/css/css-triangle/
 }
 
 body {
-    background-image: url("./images/background_image.png");    
+    background-image: url("images/background_image.png");    
     margin: 0;   
     cursor: pointer; 
 }
@@ -24,7 +24,7 @@ body {
     align-items: center;    
     width: 100vw;
     height: 100vh;
-    background-image: url("./images/gameStart_image.jpg");
+    background-image: url("images/gameStart_image.jpg");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
