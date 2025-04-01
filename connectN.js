@@ -28,8 +28,6 @@ function createBoard() {
         <div class="arrow"></div>
     </td>
     */
-    
-
     let tdArrow = document.createElement("td");
     tdArrow.colSpan = 3;
     tdArrow.classList.add("tdArrow");
@@ -70,7 +68,15 @@ function createBoard() {
     }
 }
 
-function dropCoin(row, col) {
+function changeCoinInTheSpot(spot, col, color) {
+    let spotCoin = document.getElementById("spot" + spot + col);
+    spotCoin.removeChild(spotCoin.children[0]);
+    let newCoin = document.createElement("div");
+    newCoin.classList.add(color + "Coin");
+    spotCoin.appendChild(newCoin);
+}
+
+async function dropCoin(row, col) {
     if (!endGame) {
         let y = 0;
         //find the first blank space to fill with the player color        
@@ -83,6 +89,13 @@ function dropCoin(row, col) {
         // if there is blank space to fill the remove the blank and fill the
         // space with the color of the current player
         if (y >= 0) {
+
+            for(let spot = 0; spot < y; spot++) {                
+                changeCoinInTheSpot(spot, col, currentPlayer);                
+                await sleep(200);
+                changeCoinInTheSpot(spot, col, "blank");                                
+            }
+
             let spotCoin = document.getElementById("spot" + (y) + col);
             spotCoin.removeChild(spotCoin.children[0]);
             let newCoin = document.createElement("div");
@@ -215,8 +228,11 @@ function playAgain() {
     document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");    
     currentPlayer = "red";
     document.getElementById("currentPlayerCoin").classList.add(currentPlayer + "Coin");
-    document.getElementById("player").innerText = "CURRENT PLAYER";          
+    document.getElementById("player").innerText = "PLAYER TURN";          
     
     createBoard();
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

@@ -15,6 +15,7 @@ body {
     background-image: url("images/background_image.png");    
     margin: 0;   
     cursor: pointer; 
+    font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", "sans serif"; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; 
 }
 
 .gameStart {
@@ -22,7 +23,7 @@ body {
     flex-direction: column-reverse;
     justify-content: end;
     align-items: center;    
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     background-image: url("images/gameStart_image.jpg");
     background-repeat: no-repeat;
@@ -64,26 +65,6 @@ body {
     padding: 20px;
 }
 
-@media (max-width: 580px) {    
-   
-    .gamePlay{
-        flex-direction: column;
-    }
-
-    .gamePlay>.player {           
-        width: 100%;        
-        box-shadow: none;        
-        padding: 0px;
-        margin-bottom: 20px;
-    }
-
-    .arrow {
-        visibility: hidden;
-    }
-
-}
-
-
 .containerBoard {
     display: flex;
     flex-direction: row;
@@ -92,7 +73,6 @@ body {
     width: 80%;
     height: 90vmin;
     margin: 5vmin;   
-
 }
 
 .board {
@@ -104,9 +84,26 @@ body {
 }
 
 @media (max-width: 1023px) {
-    .gamePlay>.player {
+    .gameStart>button {
+        height: 10vmin;   
+        margin-bottom: 35vmin;    
+    }
+
+    .gamePlay{
+        flex-direction: column;
+    }
+
+    .gamePlay>.player {           
+        width: 100%;        
+        box-shadow: none;        
+        padding: 0px;
+        margin-bottom: 20px;
         display: block;
         text-align: center;
+    }
+
+    .arrow {
+        visibility: hidden;
     }
  
     .containerBoard {        
@@ -115,6 +112,7 @@ body {
         height: 100vmin;      
         margin: 0;
     }
+
     .board {
         background-color: transparent;        
         height: 80vmin;
@@ -179,10 +177,8 @@ body {
 }
   
 @keyframes fillingRed {
-  0%   {background: white;background-clip: padding-box; }
-  25%  {background: linear-gradient(to bottom, var(--redCoinColor) 25%, white 70%);background-clip: padding-box; }
-  25%  {background: linear-gradient(to bottom, var(--redCoinColor) 50%, white 50%);background-clip: padding-box; }
-  100% {background: var(--redCoinColor);background-clip: padding-box; }
+    from {background: white;background-clip: padding-box; }
+    to {background: var(--redCoinColor);background-clip: padding-box; }  
 }
 
 @keyframes fillingYellow {
@@ -194,8 +190,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;    
-    
+    align-items: center;            
 }
 
 .messageContainer>span {
@@ -204,6 +199,8 @@ body {
     padding: 10px;
     color: white;
     margin: auto;    
+    width: 100%;
+    text-align: center;
  }
 
  .arrow {    
