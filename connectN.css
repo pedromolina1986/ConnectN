@@ -5,8 +5,8 @@ Triangle: https://css-tricks.com/snippets/css/css-triangle/
 */
 
 :root {
-    --coinWidth: 100px;
-    --coinHeight: 100px;
+    --coinWidth: calc(35vmin/3);
+    --coinHeight: calc(100vmin/9);
     --redCoinColor: rgba(255,0,0,1);
     --yellowCoinColor: rgba(252,176,69,1);    
 }

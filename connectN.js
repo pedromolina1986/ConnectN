@@ -10,6 +10,7 @@ let ROWS = 6;
 let COLS = 3;
 let currentPlayer = "red";//yellow is the second player
 let endGame = false;
+let draw = false;
 
 function startButton() {
     let gameStartContainer = document.getElementById("gameStart");
@@ -90,11 +91,11 @@ async function dropCoin(row, col) {
         // space with the color of the current player
         if (y >= 0) {
 
-            for (let spot = 0; spot < y; spot++) {
+            /*for (let spot = 0; spot < y; spot++) {
                 changeCoinInTheSpot(spot, col, currentPlayer);
                 await sleep(200);
                 changeCoinInTheSpot(spot, col, "blank");
-            }
+            }*/
 
             let spotCoin = document.getElementById("spot" + (y) + col);
             spotCoin.removeChild(spotCoin.children[0]);
@@ -117,7 +118,14 @@ async function dropCoin(row, col) {
                 }
                 document.getElementById("currentPlayerCoin").classList.add(currentPlayer + "Coin");
             } else {
-                document.getElementById("player").innerText = "WINNER!!!";
+                if (draw) {
+                    document.getElementById("player").innerText = "DRAW GAME!!!";
+                    document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");                  
+                    document.getElementById("currentPlayerCoin").classList.add("blankCoin");
+                } else {
+                    document.getElementById("player").innerText = "WINNER!!!";
+                }
+                
 
 
                 let firstRow = Array.from(document.getElementById("firstRow").children);
@@ -153,6 +161,11 @@ async function dropCoin(row, col) {
 }
 
 function checkGameResult(row, col) {
+    //is there any blank coin?
+    if (document.querySelectorAll(".blankCoin").length == 0){
+        draw = true;
+        return true;
+    }
     if (row >= 0) {
         //row check    
         let spotLeft = document.getElementById("spot" + row + 0);
@@ -231,6 +244,7 @@ function playAgain() {
     });
 
     endGame = false;
+    draw = false;
     document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");
     currentPlayer = "red";
     document.getElementById("currentPlayerCoin").classList.add(currentPlayer + "Coin");
