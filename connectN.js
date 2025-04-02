@@ -4,7 +4,7 @@ REFERENCES:
 ARROW MOVEMENT: 
     https://stackoverflow.com/questions/28267256/how-to-move-an-element-to-the-mouse-position
     https://www.w3schools.com/jsref/event_onmousemove.asp
-*/ 
+*/
 
 let ROWS = 6;
 let COLS = 3;
@@ -35,16 +35,16 @@ function createBoard() {
     divArrow.classList.add("arrow");
     tdArrow.appendChild(divArrow);
     document.getElementById("firstRow").appendChild(tdArrow);
-    
+
     board.addEventListener('mousemove', function (event) {
-        var x = event.clientX;                
+        var x = event.clientX;
         var arrow = document.querySelector(".arrow");
         if (arrow) {
-            arrow.style.position = "absolute";    
-            arrow.style.left = `${x}px`;          
-        }        
+            arrow.style.position = "absolute";
+            arrow.style.left = `${x}px`;
+        }
     })
-    
+
     //let tdArrow = document.createElement
     for (let i = 0; i < ROWS; i++) {
         let newRow = document.createElement("tr");
@@ -90,10 +90,10 @@ async function dropCoin(row, col) {
         // space with the color of the current player
         if (y >= 0) {
 
-            for(let spot = 0; spot < y; spot++) {                
-                changeCoinInTheSpot(spot, col, currentPlayer);                
+            for (let spot = 0; spot < y; spot++) {
+                changeCoinInTheSpot(spot, col, currentPlayer);
                 await sleep(200);
-                changeCoinInTheSpot(spot, col, "blank");                                
+                changeCoinInTheSpot(spot, col, "blank");
             }
 
             let spotCoin = document.getElementById("spot" + (y) + col);
@@ -104,132 +104,138 @@ async function dropCoin(row, col) {
         }
 
         //check if the game ends
-        endGame = checkGameResult(y, col);
+        if (y >= 0) {
+            endGame = checkGameResult(y, col);
 
-        if (!endGame) {
-            //change player side
-            document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");
-            if (currentPlayer == "red") {
-                currentPlayer = "yellow";
+            if (!endGame) {
+                //change player side
+                document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");
+                if (currentPlayer == "red") {
+                    currentPlayer = "yellow";
+                } else {
+                    currentPlayer = "red";
+                }
+                document.getElementById("currentPlayerCoin").classList.add(currentPlayer + "Coin");
             } else {
-                currentPlayer = "red";
-            }
-            document.getElementById("currentPlayerCoin").classList.add(currentPlayer + "Coin");
-        } else {
-            document.getElementById("player").innerText = "WINNER!!!";
+                document.getElementById("player").innerText = "WINNER!!!";
 
-           
-            let firstRow = Array.from(document.getElementById("firstRow").children);
-            firstRow.map((element) => {
-                element.remove();                        
-            });
-            /*
-            <td colspan="3">
-                <div id="messageContainer" class="messageContainer">
-                    <span id="messageText" onclick="playAgain()">PLAY AGAIN</span>
-                </div>
-            </td>                    
-            */
-            let td = document.createElement("td");
-            td.colSpan = 3;
-            let div = document.createElement("div");
-            div.id = "messageContainer";
-            div.classList.add("messageContainer");
-            let span = document.createElement("span");
-            span.id = "messageText";
-            span.onclick = function () {
-                playAgain();
+
+                let firstRow = Array.from(document.getElementById("firstRow").children);
+                firstRow.map((element) => {
+                    element.remove();
+                });
+                /*
+                <td colspan="3">
+                    <div id="messageContainer" class="messageContainer">
+                        <span id="messageText" onclick="playAgain()">PLAY AGAIN</span>
+                    </div>
+                </td>                    
+                */
+                let td = document.createElement("td");
+                td.colSpan = 3;
+                let div = document.createElement("div");
+                div.id = "messageContainer";
+                div.classList.add("messageContainer");
+                let span = document.createElement("span");
+                span.id = "messageText";
+                span.onclick = function () {
+                    playAgain();
+                }
+                span.innerText = "Play Again";
+                div.appendChild(span);
+                td.appendChild(div);
+                document.getElementById("firstRow").appendChild(td);
+
             }
-            span.innerText = "Play Again";
-            div.appendChild(span);
-            td.appendChild(div);
-            document.getElementById("firstRow").appendChild(td);
-            
         }
+        
     }
 }
 
-function checkGameResult(row, col) {    
-    //row check    
-    let spotLeft = document.getElementById("spot" + row + 0);
-    let spotCenter = document.getElementById("spot" + row + 1);
-    let spotRight = document.getElementById("spot" + row + 2);
+function checkGameResult(row, col) {
+    if (row >= 0) {
+        //row check    
+        let spotLeft = document.getElementById("spot" + row + 0);
+        let spotCenter = document.getElementById("spot" + row + 1);
+        let spotRight = document.getElementById("spot" + row + 2);
 
-    if (spotLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-        spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-        spotRight.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
-        return true;
+        if (spotLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+            spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+            spotRight.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+            return true;
+        }
+
+        //col & diagonal check    
+        //JUST CHECK after third row to optimize thhe gaming logic
+        let centerRow = 0;
+        if (row < ROWS - 2) {
+            centerRow = row + 1;
+            let spotDown = document.getElementById("spot" + (centerRow - 1) + col);
+            spotCenter = document.getElementById("spot" + (centerRow) + col);
+            let spotUp = document.getElementById("spot" + (centerRow + 1) + col);
+
+            //COL check
+            if (spotDown.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                spotUp.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                return true;
+            };
+
+            let centerCol = col;
+            //if it is the first left row we shift the check to the second in the left
+            //else if the col is the last col in the right of the board then shift one to left to get the last but one column as a center 
+
+            if (centerCol == 0) {
+                centerCol = col + 1;
+            } else if (centerCol == COLS - 1) {
+                centerCol = col - 1;
+            };
+
+            //DIAGONAL from left to right check
+            let spotDownLeft = document.getElementById("spot" + (centerRow - 1) + (centerCol - 1));
+            spotCenter = document.getElementById("spot" + (centerRow) + centerCol);
+            let spotUpRight = document.getElementById("spot" + (centerRow + 1) + (centerCol + 1));
+            if (spotDownLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                spotUpRight.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                return true;
+            };
+
+            //DIAGONAL from right to left check
+            let spotDownRight = document.getElementById("spot" + (centerRow - 1) + (centerCol + 1));
+            spotCenter = document.getElementById("spot" + (centerRow) + centerCol);
+            let spotUpLeft = document.getElementById("spot" + (centerRow + 1) + (centerCol - 1));
+
+            if (spotDownRight.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                spotUpLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                return true;
+            };
+
+        };
     }
 
-    //col & diagonal check    
-    //JUST CHECK after third row to optimize thhe gaming logic
-    let centerRow = 0;
-    if (row < ROWS - 2) {
-        centerRow = row + 1;
-        let spotDown = document.getElementById("spot" + (centerRow - 1) + col);
-        spotCenter = document.getElementById("spot" + (centerRow) + col);
-        let spotUp = document.getElementById("spot" + (centerRow + 1) + col);
-
-        //COL check
-        if (spotDown.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-            spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-            spotUp.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
-            return true;
-        };
-
-        let centerCol = col;
-        //if it is the first left row we shift the check to the second in the left
-        //else if the col is the last col in the right of the board then shift one to left to get the last but one column as a center 
-
-        if (centerCol == 0) {
-            centerCol = col + 1;
-        } else if (centerCol == COLS - 1) {
-            centerCol = col - 1;
-        };        
-
-        //DIAGONAL from left to right check
-        let spotDownLeft = document.getElementById("spot" + (centerRow - 1) + (centerCol - 1));
-        spotCenter = document.getElementById("spot" + (centerRow) + centerCol);
-        let spotUpRight = document.getElementById("spot" + (centerRow + 1) + (centerCol + 1));
-        if (spotDownLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-            spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-            spotUpRight.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
-            return true;
-        };
-
-        //DIAGONAL from right to left check
-        let spotDownRight = document.getElementById("spot" + (centerRow - 1) + (centerCol + 1));
-        spotCenter = document.getElementById("spot" + (centerRow) + centerCol);
-        let spotUpLeft = document.getElementById("spot" + (centerRow + 1) + (centerCol - 1));
-
-        if (spotDownRight.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-            spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-            spotUpLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
-            return true;
-        };
-
-    };
 }
 
-function playAgain() {    
+function playAgain() {
     let boardElements = Array.from(document.getElementById("board").children);
-    boardElements.map((element,index) => {
+    boardElements.map((element, index) => {
         if (index != 0) {
             element.remove();
-        }                        
+        }
     });
 
     let firstRow = Array.from(document.getElementById("firstRow").children);
     firstRow.map((element) => {
-        element.remove();                        
+        element.remove();
     });
 
     endGame = false;
-    document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");    
+    document.getElementById("currentPlayerCoin").classList.remove(currentPlayer + "Coin");
     currentPlayer = "red";
     document.getElementById("currentPlayerCoin").classList.add(currentPlayer + "Coin");
-    document.getElementById("player").innerText = "PLAYER TURN";          
-    
+    document.getElementById("player").innerText = "PLAYER TURN";
+
     createBoard();
 }
 

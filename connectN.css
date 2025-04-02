@@ -47,7 +47,7 @@ body {
     visibility: hidden;
     display: flex;
     flex-direction: row;
-    justify-content: stretch;    
+    justify-content: left;    
 }
 
 .gamePlay>h1 {
@@ -62,7 +62,8 @@ body {
     width: 25%;    
     box-shadow: -1px 9px 18px 0px rgba(0,0,0,0.75);
     height: 20%; 
-    padding: 20px;
+    padding: 50px;
+    border-bottom-right-radius: 10px;
 }
 
 .containerBoard {
@@ -70,7 +71,7 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 40%;
     height: 90vmin;
     margin: 5vmin;   
 }
@@ -190,7 +191,8 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;            
+    align-items: center;         
+    text-align: center;   
 }
 
 .messageContainer>span {
@@ -200,7 +202,6 @@ body {
     color: white;
     margin: auto;    
     width: 100%;
-    text-align: center;
  }
 
  .arrow {    
