@@ -194,41 +194,98 @@ function checkGameResult(row, col) {
                 return true;
             };
 
-            let centerCol = col;
-            //if it is the first left row we shift the check to the second in the left
-            //else if the col is the last col in the right of the board then shift one to left to get the last but one column as a center 
-
-            if (centerCol == 0) {
-                centerCol = col + 1;
-            } else if (centerCol == COLS - 1) {
-                centerCol = col - 1;
+        };       
+        
+        //DIAGONAL from left to right check
+        //center coolumn always will be 1 in a diagonal        
+        
+        //if the col is the last one
+        let spot1;
+        let spot2;
+        let spot3;
+        if (col == 2){
+            //going down
+            if (row+1 < ROWS && row+2 < ROWS) {
+                spot1 = document.getElementById("spot" + (row) + (col));
+                spot2 = document.getElementById("spot" + (row+1) + (col-1));
+                spot3 = document.getElementById("spot" + (row+2) + (col-2));
+                if (spot1.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot2.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot3.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                    return true;
+                };
+            };           
+    
+            //going up
+            if (row-1 >= 0 && row-2 >= 0) {
+                spot1 = document.getElementById("spot" + (row) + (col));
+                spot2 = document.getElementById("spot" + (row-1) + (col-1));
+                spot3 = document.getElementById("spot" + (row-2) + (col-2));
+                if (spot1.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot2.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot3.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                    return true;
+                };
             };
-
-            //DIAGONAL from left to right check
-            let spotDownLeft = document.getElementById("spot" + (centerRow - 1) + (centerCol - 1));
-            spotCenter = document.getElementById("spot" + (centerRow) + centerCol);
-            let spotUpRight = document.getElementById("spot" + (centerRow + 1) + (centerCol + 1));
-            if (spotDownLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-                spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-                spotUpRight.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
-                return true;
-            };
-
-            //DIAGONAL from right to left check
-            let spotDownRight = document.getElementById("spot" + (centerRow - 1) + (centerCol + 1));
-            spotCenter = document.getElementById("spot" + (centerRow) + centerCol);
-            let spotUpLeft = document.getElementById("spot" + (centerRow + 1) + (centerCol - 1));
-
-            if (spotDownRight.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-                spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
-                spotUpLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
-                return true;
-            };
-
         };
-    }
-
-}
+        //if the col is the middle one
+        if (col == 1) {
+            //DIAGONAL from left to right check
+            if (row - 1 >= 0 && row + 1 < ROWS) {
+                let spotDownLeft = document.getElementById("spot" + (row - 1) + (col - 1));
+                spotCenter = document.getElementById("spot" + (row) + (col));
+                let spotUpRight = document.getElementById("spot" + (row + 1) + (col + 1));
+                if (spotDownLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spotUpRight.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                    return true;
+                };
+            };
+            
+    
+            //DIAGONAL from right to left check
+            if (row - 1 >= 0 && row + 1 < ROWS) {
+                let spotDownRight = document.getElementById("spot" + (row - 1) + (col + 1));
+                spotCenter = document.getElementById("spot" + (row) + (col));
+                let spotUpLeft = document.getElementById("spot" + (row + 1) + (col - 1));
+        
+                if (spotDownRight.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spotCenter.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spotUpLeft.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                    return true;
+                };
+            };
+        };
+        //if the col is the first one
+        if (col == 0){
+            //going down
+            if (row+1 < ROWS && row+2 < ROWS){
+                spot1 = document.getElementById("spot" + (row) + (col));
+                spot2 = document.getElementById("spot" + (row+1) + (col+1));
+                spot3 = document.getElementById("spot" + (row+2) + (col+2));
+                if (spot1.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot2.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot3.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                    return true;
+                };
+            };
+            
+    
+            //going up
+            if (row-1 >= 0 && row-2 >= 0){
+                spot1 = document.getElementById("spot" + (row) + (col));
+                spot2 = document.getElementById("spot" + (row-1) + (col+1));
+                spot3 = document.getElementById("spot" + (row-2) + (col+2));
+                if (spot1.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot2.querySelectorAll("." + currentPlayer + "Coin").length > 0 &&
+                    spot3.querySelectorAll("." + currentPlayer + "Coin").length > 0) {
+                    return true;
+                };
+            };
+        
+        };        
+    };
+};
 
 function playAgain() {
     let boardElements = Array.from(document.getElementById("board").children);
